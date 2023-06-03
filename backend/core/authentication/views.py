@@ -2,8 +2,12 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 
-from core.authentication.serializers import UserSerializer, RegisterSerializer, ProfileSerializer, \
-    ChangePasswordSerializer
+from core.authentication.serializers import (
+    ChangePasswordSerializer,
+    ProfileSerializer,
+    RegisterSerializer,
+    UserSerializer,
+)
 from core.authentication.utils import User
 
 
@@ -13,11 +17,13 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
 
     def get_object(self):
-        return (
-            self.request.user
-            if self.action in ['profile', 'update_profile', 'change_password']
-            else super().get_object()
-        )
+        if self.action in [
+            'change_password',
+            'retrieve_profile',
+            'update_profile',
+        ]:
+            return self.request.user
+        return super().get_object()
 
     @action(
         methods=['post'],
@@ -29,14 +35,16 @@ class UserViewSet(viewsets.ModelViewSet):
         return super().create(request)
 
     @action(
+        methods=['get'],
         detail=False,
+        url_path='profile',
         serializer_class=ProfileSerializer,
         permission_classes=[IsAuthenticated],
     )
-    def profile(self, request):
+    def retrieve_profile(self, request):
         return super().retrieve(request)
 
-    @profile.mapping.put
+    @retrieve_profile.mapping.put
     def update_profile(self, request):
         return super().update(request)
 

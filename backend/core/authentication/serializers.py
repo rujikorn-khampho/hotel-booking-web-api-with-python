@@ -32,16 +32,14 @@ class RegisterSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
-        user = User.objects.create(
+        return User.objects.create(
             email=validated_data.get('email'),
             first_name=validated_data.get('first_name'),
             last_name=validated_data.get('last_name'),
             phone=validated_data.get('phone'),
             address=validated_data.get('address'),
+            password=make_password(validated_data.get('password')),
         )
-        user.password = make_password(validated_data.get('password'))
-        user.save()
-        return user
 
 
 class UserSerializer(serializers.ModelSerializer):
