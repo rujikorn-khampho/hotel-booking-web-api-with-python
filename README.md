@@ -2,7 +2,7 @@
 
 ## ER Diagram
 
-![er-diagram-for-hotel-booking-system]()
+![er-diagram-for-hotel-booking-system](docs/er-diagram-for-hotel-booking-system.png)
 
 ## Backend
 
