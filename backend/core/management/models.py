@@ -19,7 +19,7 @@ class RoomType(AbstractNameDescription):
     pass
 
 
-class Amenity(AbstractNameDescription):
+class Equipment(AbstractNameDescription):
     pass
 
 
@@ -34,28 +34,32 @@ class Room(models.Model):
         on_delete=models.CASCADE,
         related_name='rooms',
     )
-    number = models.CharField(max_length=20)
-    amenities = models.ManyToManyField(
-        'management.Amenity',
+    equipments = models.ManyToManyField(
+        'management.Equipment',
         related_name='rooms',
-        through='management.RoomAmenity',
+        through='management.Amenity',
         blank=True,
+    )
+    name = models.CharField(max_length=20)
+    price = models.DecimalField(
+        max_digits=9,
+        decimal_places=2,
     )
 
     objects = models.Manager()
 
 
-class RoomAmenity(models.Model):
+class Amenity(models.Model):
     room = models.ForeignKey(
         'management.Room',
         on_delete=models.CASCADE,
-        related_name='room_amenities',
+        related_name='amenities',
     )
-    amenity = models.ForeignKey(
-        'management.Amenity',
+    equipment = models.ForeignKey(
+        'management.Equipment',
         on_delete=models.CASCADE,
-        related_name='room_amenities',
+        related_name='amenities',
     )
-    amenity_count = models.PositiveSmallIntegerField()
+    quantity = models.PositiveSmallIntegerField()
 
     objects = models.Manager()

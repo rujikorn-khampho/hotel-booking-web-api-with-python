@@ -12,7 +12,7 @@ from core.authentication.utils import User
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.order_by('-pk')
+    queryset = User.objects.order_by('pk')
     serializer_class = UserSerializer
     permission_classes = [IsAdminUser]
 
