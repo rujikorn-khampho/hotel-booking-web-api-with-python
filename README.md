@@ -2,6 +2,8 @@
 
 ## ER Diagram
 
+![er-diagram-for-hotel-booking-system](docs/er-diagram-for-hotel-booking-system.png)
+
 ## Backend
 
 This project uses a Django command for various tasks. Some of the available tasks
