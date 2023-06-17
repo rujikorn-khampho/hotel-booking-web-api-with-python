@@ -96,3 +96,16 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         instance.password = make_password(validated_data.get('new_password'))
         instance.save()
         return instance
+
+
+class GuestReadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'first_name',
+            'last_name',
+            'email',
+            'phone',
+            'address',
+        ]

@@ -45,6 +45,13 @@ class Room(models.Model):
         max_digits=9,
         decimal_places=2,
     )
+    is_available = models.BooleanField(default=True)
+    guests = models.ManyToManyField(
+        'authentication.User',
+        related_name='rooms',
+        through='management.Booking',
+        blank=True,
+    )
 
     objects = models.Manager()
 
@@ -61,5 +68,22 @@ class Amenity(models.Model):
         related_name='amenities',
     )
     quantity = models.PositiveSmallIntegerField()
+
+    objects = models.Manager()
+
+
+class Booking(models.Model):
+    room = models.ForeignKey(
+        'management.Room',
+        on_delete=models.CASCADE,
+        related_name='bookings',
+    )
+    guest = models.ForeignKey(
+        'authentication.User',
+        on_delete=models.CASCADE,
+        related_name='bookings',
+    )
+    check_in_date = models.DateTimeField()
+    check_out_date = models.DateTimeField()
 
     objects = models.Manager()
