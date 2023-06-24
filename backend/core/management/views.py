@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 
 from core.management.models import Hotel, RoomType, Equipment, Booking
+from core.management.permissions import ReadOnly
 from core.management.serializers import (
     BookingReadSerializer,
     BookingWriteSerializer,
@@ -23,7 +24,7 @@ class HotelViewSet(viewsets.ModelViewSet):
     write_serializer_class = HotelWriteSerializer
     list_serializer_class = HotelListSerializer
     retrieve_serializer_class = HotelRetrieveSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser | ReadOnly]
 
     def get_serializer_class(self):
         serializer_action_mapping = {
@@ -64,11 +65,10 @@ class BookingViewSet(viewsets.ModelViewSet):
     read_serializer_class = BookingReadSerializer
 
     def get_queryset(self):
-        if self.request.user.is_superuser is False:
-            return super().get_queryset().filter(
-                guest=self.request.user,
-            )
-        return super().get_queryset()
+        queryset = super().get_queryset()
+        if not self.request.user.is_superuser:
+            queryset = queryset.filter(guest=self.request.user)
+        return queryset
 
     def get_serializer_class(self):
         serializer_action_mapping = {
