@@ -12,6 +12,7 @@ are listed below.
 * `python manage.py makemigrations`  - Creating new migrations based on the changes you have made to your models.
 * `python manage.py migrate`         - Applying and unapplying migrations.
 * `python manage.py runserver`       - Run the server.
+* `python manage.py test`            - Run all the tests.
 
 ## Youtube Video
 
